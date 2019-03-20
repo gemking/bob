@@ -1,0 +1,152 @@
+import java.sql.*;
+import java.util.*;
+import java.io.*;
+public class n01052448 {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+
+        Connection myConn = DriverManager.getConnection(dbUrl, userName, password);
+        createDatabase(myConn);
+        //createMatchesTable(myConn);
+        //createMembersTable(myConn);
+        //createEarningsTable(myConn);
+        //createPlayersTable(myConn);
+        //createTeamsTable(myConn);
+        //createTournamentsTable(myConn);
+        //insertIntoMatchesTable(myConn);
+    }
+
+    public static void createDatabase(Connection myConn) {
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        try {
+
+            PreparedStatement use = myConn.prepareStatement("USE PlayerDB_Assign4");
+            use.executeQuery();
+            PreparedStatement create = myConn.prepareStatement("CREATE DATABASE IF NOT EXISTS PlayerDB_Assign4");
+            create.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Database Creation Complete");
+        }
+    }
+
+    public static void createEarningsTable(Connection myConn) {
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        try {
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS earnings(tournament int, player int, prize_money int, position int, PRIMARY KEY(tournament), FOREIGN KEY (player) REFERENCES members(player))");
+            create.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Earnings Table Creation Complete");
+        }
+    }
+
+    public static void createMatchesTable(Connection myConn) {
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        try {
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS matches_v2(match_id int PRIMARY KEY, date DATE, tournament int, playerA int, playerB int, scoreA int, scoreB int, offline Bool)");
+            create.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Matches Table Creation Complete");
+        }
+    }
+
+    public static void createMembersTable(Connection myConn) {
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        try {
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS members(player int, team int, start_date DATE, end_date DATE, PRIMARY KEY(player, start_date))");
+            create.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Members Table Creation Complete");
+        }
+    }
+
+    public static void createPlayersTable(Connection myConn) {
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        try {
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS players(player_id int, tag varchar(255), real_name varchar(255), nationality varchar(255), birthday DATE, race varchar(255),  PRIMARY KEY(player_id))");
+            create.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Players Table Creation Complete");
+        }
+    }
+        public static void createTeamsTable (Connection myConn){
+            //Initialize database constants / initialize database constants
+            String dbDriver = "com.mysql.jdbc.Driver";
+            String dbUrl = "jdbc:mysql://localhost:3306";
+            String userName = "root";
+            String password = "root";
+            try {
+                PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS teams(team_id int, name varchar(255), founded DATE, disbanded DATE,  PRIMARY KEY(team_id))");
+                create.executeUpdate();
+            } catch (Exception e) {
+                System.out.println(e);
+            } finally {
+                System.out.println("Teams Table Creation Complete");
+            }
+        }
+    public static void createTournamentsTable (Connection myConn){
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        try {
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS tournaments(tournament_id int, name varchar(255), region varchar(255), major Bool, PRIMARY KEY(tournament_id))");
+            create.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Tournaments Table Creation Complete");
+        }
+    }
+    public static void insertIntoMatchesTable (Connection myConn){
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        String directory = System.getProperty("user.directory") + "/_matches_v2.csv";
+        Scanner file = new Scanner(new File(directory));
+        try {
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS tournaments(tournament_id int, name varchar(255), region varchar(255), major Bool, PRIMARY KEY(tournament_id))");
+            create.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Matches Table Insertion Complete");
+        }
+    }
+}
