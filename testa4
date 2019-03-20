@@ -2,7 +2,7 @@ import java.sql.*;
 import java.util.*;
 import java.io.*;
 public class n01052448 {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException, FileNotFoundException {
         String dbDriver = "com.mysql.jdbc.Driver";
         String dbUrl = "jdbc:mysql://localhost:3306";
         String userName = "root";
@@ -16,7 +16,7 @@ public class n01052448 {
         //createPlayersTable(myConn);
         //createTeamsTable(myConn);
         //createTournamentsTable(myConn);
-        //insertIntoMatchesTable(myConn);
+        insertIntoMatchesTable(myConn);
     }
 
     public static void createDatabase(Connection myConn) {
@@ -132,17 +132,23 @@ public class n01052448 {
             System.out.println("Tournaments Table Creation Complete");
         }
     }
-    public static void insertIntoMatchesTable (Connection myConn){
+    public static void insertIntoMatchesTable (Connection myConn) throws FileNotFoundException{
         //Initialize database constants / initialize database constants
         String dbDriver = "com.mysql.jdbc.Driver";
         String dbUrl = "jdbc:mysql://localhost:3306";
         String userName = "root";
         String password = "root";
-        String directory = System.getProperty("user.directory") + "/_matches_v2.csv";
+        String directory = System.getProperty("matches_v2.csv");
         Scanner file = new Scanner(new File(directory));
+        StringBuilder x = new StringBuilder();
+        do{
+            x = x.append("(" + file.nextLine() + ")");
+            if(file.hasNextLine())
+                x.append(",");
+        } while(file.hasNextLine());
         try {
-            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS tournaments(tournament_id int, name varchar(255), region varchar(255), major Bool, PRIMARY KEY(tournament_id))");
-            create.executeUpdate();
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO matches VALUES " + x.toString());
+            insert.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
