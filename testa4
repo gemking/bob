@@ -16,7 +16,14 @@ public class n01052448 {
         //createPlayersTable(myConn);
         //createTeamsTable(myConn);
         //createTournamentsTable(myConn);
-        insertIntoMatchesTable(myConn);
+        //insertIntoMatchesTable(myConn);
+        //insertIntoMembersTable(myConn);
+        //insertIntoEarningsTable(myConn);
+        //insertIntoPlayersTable(myConn);
+        //insertIntoTeamsTable(myConn);
+        //insertIntoTournamentsTable(myConn);
+        runQueryQuestionOne(myConn);
+        //runQueryQuestionTwo(String playerid, String team, Connection myConn);
     }
 
     public static void createDatabase(Connection myConn) {
@@ -27,11 +34,11 @@ public class n01052448 {
         String password = "root";
         try {
 
-            PreparedStatement use = myConn.prepareStatement("USE PlayerDB_Assign4");
-            use.executeQuery();
+
             PreparedStatement create = myConn.prepareStatement("CREATE DATABASE IF NOT EXISTS PlayerDB_Assign4");
             create.executeUpdate();
-
+            PreparedStatement use = myConn.prepareStatement("USE PlayerDB_Assign4");
+            use.executeQuery();
         } catch (Exception e) {
             System.out.println(e);
         } finally {
@@ -46,7 +53,7 @@ public class n01052448 {
         String userName = "root";
         String password = "root";
         try {
-            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS earnings(tournament int, player int, prize_money int, position int, PRIMARY KEY(tournament), FOREIGN KEY (player) REFERENCES members(player))");
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS earnings(tournament int, player int, prize_money int, position int, PRIMARY KEY(tournament, player))");
             create.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -138,16 +145,16 @@ public class n01052448 {
         String dbUrl = "jdbc:mysql://localhost:3306";
         String userName = "root";
         String password = "root";
-        String directory = System.getProperty("matches_v2.csv");
-        Scanner file = new Scanner(new File(directory));
         StringBuilder x = new StringBuilder();
+        String directory = System.getProperty("user.dir") + "/matches_v2.csv";
+        Scanner file = new Scanner(new File(directory));
         do{
-            x = x.append("(" + file.nextLine() + ")");
+            x = x.append("(" + file.nextLine()+ ")");
             if(file.hasNextLine())
                 x.append(",");
         } while(file.hasNextLine());
         try {
-            PreparedStatement insert = myConn.prepareStatement("INSERT INTO matches VALUES " + x.toString());
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO matches_v2 VALUES " + x.toString());
             insert.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -155,4 +162,147 @@ public class n01052448 {
             System.out.println("Matches Table Insertion Complete");
         }
     }
-}
+
+    public static void insertIntoMembersTable (Connection myConn) throws FileNotFoundException{
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        StringBuilder x = new StringBuilder();
+        String directory = System.getProperty("user.dir") + "/members.csv";
+        Scanner file = new Scanner(new File(directory));
+        do{
+            x = x.append("(" + file.nextLine().replaceAll(",$", ",NULL")  + ")");
+            if(file.hasNextLine())
+                x.append(",");
+        } while(file.hasNextLine());
+        try {
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO members VALUES " + x.toString());
+            System.out.println(insert.toString());
+            insert.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Members Table Insertion Complete");
+        }
+    }
+    public static void insertIntoEarningsTable (Connection myConn) throws FileNotFoundException{
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        StringBuilder x = new StringBuilder();
+        String directory = System.getProperty("user.dir") + "/earnings.csv";
+        Scanner file = new Scanner(new File(directory));
+        do{
+            x = x.append("(" + file.nextLine()+ ")");
+            if(file.hasNextLine())
+                x.append(",");
+        } while(file.hasNextLine());
+        try {
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO earnings VALUES " + x.toString());
+            System.out.println(insert.toString());
+            insert.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Earnings Table Insertion Complete");
+        }
+    }
+    public static void insertIntoPlayersTable (Connection myConn) throws FileNotFoundException{
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        StringBuilder x = new StringBuilder();
+        String directory = System.getProperty("user.dir") + "/players.csv";
+        Scanner file = new Scanner(new File(directory));
+        do{
+            x = x.append("(" + file.nextLine() + ")");
+            if(file.hasNextLine())
+                x.append(",");
+        } while(file.hasNextLine());
+        try {
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO players VALUES " + x.toString());
+            insert.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Players Table Insertion Complete");
+        }
+    }
+
+    public static void insertIntoTeamsTable (Connection myConn) throws FileNotFoundException{
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        StringBuilder x = new StringBuilder();
+        String directory = System.getProperty("user.dir") + "/teams.csv";
+        Scanner file = new Scanner(new File(directory));
+        do{
+            x = x.append("(" + file.nextLine().replaceAll(",$", ",NULL")  + ")");
+            if(file.hasNextLine())
+                x.append(",");
+        } while(file.hasNextLine());
+        try {
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO teams VALUES " + x.toString());
+            System.out.println(insert.toString());
+            insert.executeUpdate();
+
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Teams Table Insertion Complete");
+        }
+    }
+    public static void insertIntoTournamentsTable (Connection myConn) throws FileNotFoundException{
+        //Initialize database constants / initialize database constants
+        String dbDriver = "com.mysql.jdbc.Driver";
+        String dbUrl = "jdbc:mysql://localhost:3306";
+        String userName = "root";
+        String password = "root";
+        StringBuilder x = new StringBuilder();
+        String directory = System.getProperty("user.dir") + "/tournaments.csv";
+        Scanner file = new Scanner(new File(directory));
+        do{
+            x = x.append("(" + file.nextLine().replaceAll(",,", ",NULL,") + ")");
+            if(file.hasNextLine())
+                x.append(",");
+        } while(file.hasNextLine());
+        try {
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO tournaments VALUES " + x.toString());
+            insert.executeUpdate();
+        } catch (Exception e) {
+            System.out.println(e);
+        } finally {
+            System.out.println("Tournaments Table Insertion Complete");
+        }
+    }
+       public static void runQueryQuestionOne(Connection myConn)  {
+
+           try (PreparedStatement statement = myConn.prepareStatement("SELECT P.real_name, P.tag, P.nationality FROM players P WHERE birthday LIKE '1990-12%'")) {
+               ResultSet rs = statement.executeQuery();
+               ResultSetMetaData resultSetMetaData = rs.getMetaData();
+               int columnNumber = resultSetMetaData.getColumnCount();
+               while (rs.next()) {
+                   String realName = rs.getString("real_name");
+                   String tag = rs.getString("tag");
+                   String nationality = rs.getString("nationality");
+                   for(int x = 1; x <= columnNumber; x++){
+                       System.out.print(rs.getString(x) + " | ");
+                   }
+                   System.out.println();
+                   //System.out.println(realName + " " + tag + " " + nationality);
+               }
+           } catch (Exception e) {
+               System.out.println(e);
+           } finally {
+               System.out.println("Query Question One Successful");
+           }
+       }
