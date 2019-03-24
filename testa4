@@ -1,7 +1,7 @@
 import java.sql.*;
 import java.util.*;
 import java.io.*;
-public class n01052448 {
+public class n01052448_Assign4 {
     public static void main(String[] args) throws SQLException, FileNotFoundException {
         String dbDriver = "com.mysql.jdbc.Driver";
         String dbUrl = "jdbc:mysql://localhost:3306";
@@ -9,19 +9,19 @@ public class n01052448 {
         String password = "root";
 
         Connection myConn = DriverManager.getConnection(dbUrl, userName, password);
-        createDatabase(myConn); //do not comment out this line as u are testing queries, as it will be needed to select the database
-        //createMatchesTable(myConn); //execute create and insert queries only once to avoid duplicate key entries
-        //createMembersTable(myConn);
-        //createEarningsTable(myConn);
-        //createPlayersTable(myConn);
-        //createTeamsTable(myConn);
-        //createTournamentsTable(myConn);
-        //insertIntoMatchesTable(myConn);
-        //insertIntoMembersTable(myConn);
-        //insertIntoEarningsTable(myConn);
-        //insertIntoPlayersTable(myConn);
-        //insertIntoTeamsTable(myConn);
-        //insertIntoTournamentsTable(myConn);
+        createDatabase(myConn);
+        createMatchesTable(myConn);
+        createMembersTable(myConn);
+        createEarningsTable(myConn);
+        createPlayersTable(myConn);
+        createTeamsTable(myConn);
+        createTournamentsTable(myConn);
+        insertIntoMatchesTable(myConn);
+        insertIntoMembersTable(myConn);
+        insertIntoEarningsTable(myConn);
+        insertIntoPlayersTable(myConn);
+        insertIntoTeamsTable(myConn);
+        insertIntoTournamentsTable(myConn);
         awaitingInput(myConn);
         //runQueryQuestionOne(myConn);
         //runQueryQuestionTwo(String playerid, String team, Connection myConn);
@@ -42,7 +42,9 @@ public class n01052448 {
             use.executeQuery();
         } catch (Exception e) {
             System.out.println(e);
+            System.out.println("Connection to database unsuccessful");
         } finally {
+            System.out.println("Connection to database successful");
             System.out.println("Database Creation Complete");
         }
     }
@@ -54,7 +56,7 @@ public class n01052448 {
         String userName = "root";
         String password = "root";
         try {
-            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS earnings(tournament int, player int, prize_money int, position int, PRIMARY KEY(tournament, player))");
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS Earnings(tournament int, player int, prize_money int, position int, PRIMARY KEY(tournament, player))");
             create.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -70,7 +72,7 @@ public class n01052448 {
         String userName = "root";
         String password = "root";
         try {
-            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS matches_v2(match_id int PRIMARY KEY, date DATE, tournament int, playerA int, playerB int, scoreA int, scoreB int, offline Bool)");
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS Matches(match_id int PRIMARY KEY, date DATE, tournament int, playerA int, playerB int, scoreA int, scoreB int, offline Bool)");
             create.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -86,7 +88,7 @@ public class n01052448 {
         String userName = "root";
         String password = "root";
         try {
-            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS members(player int, team int, start_date DATE, end_date DATE, PRIMARY KEY(player, start_date))");
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS Members(player int, team int, start_date DATE, end_date DATE, PRIMARY KEY(player, start_date))");
             create.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -102,7 +104,7 @@ public class n01052448 {
         String userName = "root";
         String password = "root";
         try {
-            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS players(player_id int, tag varchar(255), real_name varchar(255), nationality varchar(255), birthday DATE, race varchar(255),  PRIMARY KEY(player_id))");
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS Players(player_id int, tag varchar(255), real_name varchar(255), nationality varchar(255), birthday DATE, game_race varchar(255),  PRIMARY KEY(player_id))");
             create.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -118,7 +120,7 @@ public class n01052448 {
         String userName = "root";
         String password = "root";
         try {
-            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS teams(team_id int, name varchar(255), founded DATE, disbanded DATE,  PRIMARY KEY(team_id))");
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS Teams(team_id int, name varchar(255), founded DATE, disbanded DATE,  PRIMARY KEY(team_id))");
             create.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -134,7 +136,7 @@ public class n01052448 {
         String userName = "root";
         String password = "root";
         try {
-            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS tournaments(tournament_id int, name varchar(255), region varchar(255), major Bool, PRIMARY KEY(tournament_id))");
+            PreparedStatement create = myConn.prepareStatement("CREATE TABLE IF NOT EXISTS Tournaments(tournament_id int, name varchar(255), region varchar(255), major Bool, PRIMARY KEY(tournament_id))");
             create.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -158,7 +160,7 @@ public class n01052448 {
                 x.append(",");
         } while (file.hasNextLine());
         try {
-            PreparedStatement insert = myConn.prepareStatement("INSERT INTO matches_v2 VALUES " + x.toString());
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO Matches VALUES " + x.toString());
             insert.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -183,8 +185,8 @@ public class n01052448 {
                 x.append(",");
         } while (file.hasNextLine());
         try {
-            PreparedStatement insert = myConn.prepareStatement("INSERT INTO members VALUES " + x.toString());
-            System.out.println(insert.toString());
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO Members VALUES " + x.toString());
+            //System.out.println(insert.toString());
             insert.execute();
 
         } catch (Exception e) {
@@ -209,8 +211,8 @@ public class n01052448 {
                 x.append(",");
         } while (file.hasNextLine());
         try {
-            PreparedStatement insert = myConn.prepareStatement("INSERT INTO earnings VALUES " + x.toString());
-            System.out.println(insert.toString());
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO Earnings VALUES " + x.toString());
+            //System.out.println(insert.toString());
             insert.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -234,7 +236,7 @@ public class n01052448 {
                 x.append(",");
         } while (file.hasNextLine());
         try {
-            PreparedStatement insert = myConn.prepareStatement("INSERT INTO players VALUES " + x.toString());
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO Players VALUES " + x.toString());
             insert.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -258,8 +260,8 @@ public class n01052448 {
                 x.append(",");
         } while (file.hasNextLine());
         try {
-            PreparedStatement insert = myConn.prepareStatement("INSERT  INTO teams VALUES " + x.toString());
-            System.out.println(insert.toString());
+            PreparedStatement insert = myConn.prepareStatement("INSERT  INTO Teams VALUES " + x.toString());
+            //System.out.println(insert.toString());
             insert.executeUpdate();
 
         } catch (Exception e) {
@@ -284,7 +286,7 @@ public class n01052448 {
                 x.append(",");
         } while (file.hasNextLine());
         try {
-            PreparedStatement insert = myConn.prepareStatement("INSERT INTO tournaments VALUES " + x.toString());
+            PreparedStatement insert = myConn.prepareStatement("INSERT INTO Tournaments VALUES " + x.toString());
             insert.executeUpdate();
         } catch (Exception e) {
             System.out.println(e);
@@ -296,7 +298,7 @@ public class n01052448 {
 
     public static void runQueryQuestionOne(Connection myConn, String month, String year) {
 
-        try (PreparedStatement statement = myConn.prepareStatement("SELECT P.real_name, P.tag, P.nationality FROM players P WHERE birthday LIKE '" + year + "-" + month + "%'")) {
+        try (PreparedStatement statement = myConn.prepareStatement("SELECT P.real_name, P.tag, P.nationality FROM Players P WHERE birthday LIKE '" + year + "-" + month + "%'")) {
             ResultSet rs = statement.executeQuery();
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             int columnNumber = resultSetMetaData.getColumnCount();
@@ -316,37 +318,33 @@ public class n01052448 {
     }
 
     public static void runQueryQuestionTwo(Connection myConn, String playerid, String team) {
-        int playerOnOtherTeam = -1;
-        try (PreparedStatement statement = myConn.prepareStatement("SELECT * FROM members WHERE player=" + playerid + " AND end_date IS NULL LIMIT 1")) {
+        int playerOnTeam = -1;
+        try (PreparedStatement statement = myConn.prepareStatement("SELECT * FROM Members WHERE Player=" + playerid + " AND end_date IS NULL LIMIT 1")) {
             ResultSet rs = statement.executeQuery();
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             int columnNumber = resultSetMetaData.getColumnCount();
             while (rs.next()) {
-                playerOnOtherTeam = rs.getInt("player");
+                //playerOnOtherTeam = rs.getInt("player");
                 for (int x = 1; x <= columnNumber; x++) {
-                    System.out.print(rs.getString(x) + " | ");
+                    //System.out.print(rs.getString(x) + " | ");
                 }
                 System.out.println();
+                System.out.println("Query finished executing; check to see if there has been a newly inserted record in the database");
                 //System.out.println(realName + " " + tag + " " + nationality);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (playerOnOtherTeam != -1) {
-            try(PreparedStatement statement = myConn.prepareStatement("UPDATE members  SET team=" + team + ", end_date = CURDATE() WHERE player =" + playerOnOtherTeam)) {
-                statement.execute();
-            } catch(SQLException e) {
-                e.printStackTrace();
-            }
 
-            try (PreparedStatement statement = myConn.prepareStatement("UPDATE members SET team=" + team + ", start_date = CURDATE() WHERE player=" + playerOnOtherTeam)) {
+        if (playerOnTeam != -1) {
+            try (PreparedStatement statement = myConn.prepareStatement("UPDATE Members  SET team=" + team + ", end_date = CURDATE() WHERE player =" + playerOnTeam)) {
                 statement.execute();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
             return;
-        } else {//Insert a new member entry
-            try (PreparedStatement statement = myConn.prepareStatement("INSERT IGNORE INTO members (player, team, start_date) VALUES (" + playerid + ", " + team + ", CURDATE())")) {
+    } else {//Insert a new member entry
+            try (PreparedStatement statement = myConn.prepareStatement("INSERT INTO Members (player, team, start_date) VALUES (" + playerid + ", " + team + ", CURDATE())")) {
                 statement.execute();
             } catch (Exception e) {
                 System.out.println(e);
@@ -357,7 +355,7 @@ public class n01052448 {
 
      public static void runQueryQuestionThree(Connection myConn, String nationality, String year) {
 
-        try (PreparedStatement statement = myConn.prepareStatement("SELECT real_name, birthday FROM players WHERE nationality = '"+nationality+"' AND EXTRACT(YEAR FROM birthday) = "+year+"")) {
+        try (PreparedStatement statement = myConn.prepareStatement("SELECT real_name, birthday FROM Players WHERE nationality = '"+nationality+"' AND EXTRACT(YEAR FROM birthday) = "+year+"")) {
             ResultSet rs = statement.executeQuery();
             ResultSetMetaData resultSetMetaData = rs.getMetaData();
             int columnNumber = resultSetMetaData.getColumnCount();
@@ -375,9 +373,109 @@ public class n01052448 {
         }
     }
 
-    public static void awaitingInput(Connection myConn) {
+    public static void runQueryQuestionFour(Connection myConn) {
+
+        try (PreparedStatement statement = myConn.prepareStatement("SELECT P.tag, P.game_race, T.major \n" +
+                "FROM Players P, Earnings E, Tournaments T \n" +
+                "WHERE P.player_id = E.player \n" +
+                "AND E.tournament = T.tournament_id \n" +
+                "AND E.position = 1 \n" +
+                "AND T.region = ANY(SELECT T.region\n" +
+                "\t\t\t    FROM Tournaments T\n" +
+                "\t\t\t\tWHERE T.region IN('EU','AM','KR'))\n" +
+                "AND major = 1\n" +
+                "GROUP BY tag\n" +
+                "HAVING COUNT(distinct region) >= 3;")) {
+            ResultSet rs = statement.executeQuery();
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            int columnNumber = resultSetMetaData.getColumnCount();
+            while (rs.next()) {
+                String tag = rs.getString("tag");
+                String race = rs.getString("game_race");
+                String major = rs.getString("major");
+                for (int x = 1; x <= columnNumber; x++) {
+                    System.out.print(rs.getString(x) + " | ");
+                }
+                System.out.println();
+                //System.out.println(realName + " " + tag + " " + nationality);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void runQueryQuestionFive(Connection myConn) {
+
+        try (PreparedStatement statement = myConn.prepareStatement("SELECT P.tag, P.real_name, MAX(end_date) AS D\n" +
+                "FROM PLAYERS P, MEMBERS M,TEAMS T\n" +
+                "WHERE P.player_id = M.player\n" +
+                "AND M.team = T.team_id\n" +
+                "AND T.name = \"ROOT Gaming\"\n" +
+                "AND M.end_date IS NOT NULL\n" +
+                "AND P.player_id NOT IN\n" +
+                "(SELECT M.player\n" +
+                "FROM MEMBERS M, TEAMS T\n" +
+                "WHERE M.end_date IS NULL\n" +
+                "AND M.team=T.team_id\n" +
+                "AND T.name = \"ROOT Gaming\"\n" +
+                ")\n" +
+                "GROUP BY P.tag \n")) {
+            ResultSet rs = statement.executeQuery();
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            int columnNumber = resultSetMetaData.getColumnCount();
+            while (rs.next()) {
+                String tag = rs.getString("tag");
+                String realName= rs.getString("real_name");
+                String endDate = rs.getString("D");
+                for (int x = 1; x <= columnNumber; x++) {
+                    System.out.print(rs.getString(x) + " | ");
+                }
+                System.out.println();
+                //System.out.println(realName + " " + tag + " " + nationality);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void runQueryQuestionSeven(Connection myConn) {
+
+        try (PreparedStatement statement = myConn.prepareStatement("SELECT T.name, T.founded,\n" +
+                "SUM(CASE WHEN P.game_race ='P' then 1 ELSE 0 END) AS 'Protoss',\n" +
+                "SUM(CASE WHEN P.game_race ='T'  then 1 ELSE 0 END) AS 'Terran',\n" +
+                "SUM(CASE WHEN P.game_race ='Z'  then 1 ELSE 0 END) AS 'Zerg'\n" +
+                "FROM players P, teams T, members M\n" +
+                "WHERE founded < '2011-01-01'  \n" +
+                "AND M.end_date IS NULL \n" +
+                "AND P.player_id = M.player \n" +
+                "AND M.team = T.team_id \n" +
+                "AND T.disbanded IS null\n" +
+                "GROUP BY T.name\n" +
+                "ORDER BY T.name; ")) {
+            ResultSet rs = statement.executeQuery();
+            ResultSetMetaData resultSetMetaData = rs.getMetaData();
+            int columnNumber = resultSetMetaData.getColumnCount();
+            while (rs.next()) {
+                String name = rs.getString("name");
+                String founded = rs.getString("founded");
+                String Protoss = rs.getString("Protoss");
+                String Terran = rs.getString("Terran");
+                String Zerg = rs.getString("Zerg");
+                for (int x = 1; x <= columnNumber; x++) {
+                    System.out.print(rs.getString(x) + " | ");
+                }
+                System.out.println();
+                //System.out.println(realName + " " + tag + " " + nationality);
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+
+    public static void awaitingInput(Connection myConn) throws java.sql.SQLException {
         try (Scanner scanner = new Scanner(System.in)) {
-            System.out.println("Please type a command below (Type exit to exit the program or help for help): ");
+            System.out.println("Please type a command below(0 drops database and exits program; 1-7 Query Queries 1-7 respectively");
 
             while (!scanner.hasNext() && scanner.hasNext()) {
                 System.out.println("Error an invalid command has been entered");
@@ -391,11 +489,12 @@ public class n01052448 {
                         String month = scanner.nextLine();
                         System.out.println("Please type in the year");
                         String year = scanner.nextLine();
-                        if (month.equals("") || year.equals("")) {
-                            System.out.println("Error executing command");
+                        if (month.equals("") || year.equals("") || !month.matches("[0-9]+") || !year.matches("[0-9]+")) {
+                            System.out.println("Error: Invalid inputted.(Make sure to have a number(not word) for month and a number(not word) for year). Please Try Again. Restart by typing 1 to receive prompts again");
                             break;
                         }
                         runQueryQuestionOne(myConn, month, year);
+                        System.out.println("Type exit to leave  or continue inputting numbers 1-7 to invoke queries 1-7");
                         break;
                     }
                 }
@@ -405,11 +504,12 @@ public class n01052448 {
                         String playerid = scanner.nextLine();
                         System.out.println("Please type in the team");
                         String team = scanner.nextLine();
-                        if (team.equals("") || team.equals("")) {
-                            System.out.println("Error executing command");
+                        if (team.equals("") || team.equals("") || !team.matches("[0-9]+") || !team.matches("[0-9]+")) {
+                            System.out.println("Error: Invalid inputted.(Make sure to have a number(not word) for player id and a number(not word) for team). Please Try Again. Restart by typing 2 to receive prompts again");
                             break;
                         }
                         runQueryQuestionTwo(myConn, playerid, team);
+                        System.out.println("Type exit to leave or continue inputting numbers 1-7 to invoke queries 1-7");
                         break;
                     }
                 }
@@ -419,16 +519,48 @@ public class n01052448 {
                         String nationality = scanner.nextLine();
                         System.out.println("Please type in the year");
                         String year = scanner.nextLine();
-                        if (nationality.equals("") || year.equals("")) {
-                            System.out.println("Error executing command");
+                        if (nationality.equals("") || year.equals("") || !nationality.matches( ("[a-zA-Z]+"))|| !year.matches("[0-9]+") ) {
+                            System.out.println("Error: Invalid inputted(Make sure to have a word(not number) for nationality and a number(not word) for year). Please Try Again. Restart by typing 3 to receive prompts again");
                             break;
                         }
                         runQueryQuestionThree(myConn, nationality, year);
+                        System.out.println("Type exit to leave or continue inputting numbers 1-7 to invoke queries 1-7");
+                        break;
+                    }
+                }
+                switch(value){
+                    case "4": {
+                        runQueryQuestionFour(myConn);
+                        System.out.println("Type exit to leave or continue inputting numbers 1-7 to invoke queries 1-7");
+                        break;
+                    }
+                }
+                switch(value){
+                    case "5":{
+                        runQueryQuestionFive(myConn);
+                        System.out.println(" Type exit to leave or continue inputting numbers 1-7 to invoke queries 1-7");
+                        break;
+                    }
+                }
+                switch(value){
+                    case "6":{
+                        System.out.println("Query 6 was not implemented; Type exit to leave or continue inputting numbers 1-7 to invoke queries 1-7");
+                        break;
+                    }
+                }
+                switch(value){
+                    case "7":{
+                        runQueryQuestionSeven(myConn);
+                        System.out.println("Type exit to leave or continue inputting numbers 1-7 to invoke queries 1-7");
                         break;
                     }
                 }
                 switch(value){
                     case "exit": {
+                        System.out.println("Deleting database...");
+                        PreparedStatement delete = myConn.prepareStatement("DROP DATABASE PlayerDB_Assign4");
+                        delete.executeUpdate();
+                        System.out.println("Database deleted successfully...");
                         System.exit(1);
                     }
                 }
